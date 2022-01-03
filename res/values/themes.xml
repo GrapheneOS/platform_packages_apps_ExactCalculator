@@ -22,6 +22,8 @@
         <item name="android:colorAccent">@color/calculator_accent_color</item>
         <item name="android:statusBarColor">@color/calculator_accent_color</item>
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <item name="android:forceDarkAllowed">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Calculator">
