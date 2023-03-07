@@ -35,5 +35,6 @@ LOCAL_STATIC_JAVA_LIBRARIES := cr
 LOCAL_STATIC_ANDROID_LIBRARIES += androidx.legacy_legacy-support-v4
 LOCAL_STATIC_ANDROID_LIBRARIES += androidx.gridlayout_gridlayout
 LOCAL_STATIC_ANDROID_LIBRARIES += androidx.recyclerview_recyclerview
+LOCAL_STATIC_ANDROID_LIBRARIES += com.google.android.material_material
 
 include $(BUILD_PACKAGE)

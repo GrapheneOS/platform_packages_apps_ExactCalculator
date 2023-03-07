@@ -20,7 +20,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/pad_numeric"
     style="@style/PadLayoutStyle.Numeric"
-    android:background="@color/pad_numeric_background_color"
     app:rowCount="4"
     app:columnCount="3">
 

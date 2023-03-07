@@ -21,6 +21,7 @@
 
     <application
         android:allowBackup="false"
+        android:name=".App"
         android:appCategory="productivity"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"

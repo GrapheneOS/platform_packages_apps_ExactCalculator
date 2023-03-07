@@ -18,6 +18,7 @@ package com.android.calculator2;
 
 import android.animation.Animator;
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,8 @@ import android.widget.Toolbar;
 import java.util.ArrayList;
 
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING;
+
+import com.google.android.material.color.MaterialColors;
 
 public class HistoryFragment extends Fragment implements DragLayout.DragCallback {
 
@@ -140,8 +143,11 @@ public class HistoryFragment extends Fragment implements DragLayout.DragCallback
             newDataSet.add(null);
         }
         final boolean isEmpty = newDataSet.isEmpty();
-        mRecyclerView.setBackgroundColor(ContextCompat.getColor(activity,
-                isEmpty ? R.color.empty_history_color : R.color.display_background_color));
+        mRecyclerView.setBackgroundColor(
+                MaterialColors.getColor(activity,
+                        isEmpty ? com.google.android.material.R.attr.colorOnSurface : com.google.android.material.R.attr.colorSecondaryContainer ,
+                        Color.WHITE)
+        );
         if (isEmpty) {
             newDataSet.add(new HistoryItem());
         }

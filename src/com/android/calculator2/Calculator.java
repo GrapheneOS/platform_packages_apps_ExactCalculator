@@ -73,6 +73,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.android.calculator2.CalculatorFormula.OnTextSizeChangeListener;
+import com.google.android.material.color.MaterialColors;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -516,18 +517,25 @@ public class Calculator extends Activity
             }
 
             if (mCurrentState == CalculatorState.ERROR) {
-                final int errorColor =
-                        ContextCompat.getColor(this, R.color.calculator_error_color);
+                final int errorColor = MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.RED);
                 mFormulaText.setTextColor(errorColor);
                 mResultText.setTextColor(errorColor);
                 getWindow().setStatusBarColor(errorColor);
             } else if (mCurrentState != CalculatorState.RESULT) {
                 mFormulaText.setTextColor(
-                        ContextCompat.getColor(this, R.color.display_formula_text_color));
+                        MaterialColors.getColor(
+                                this,
+                                com.google.android.material.R.attr.editTextColor,
+                                Color.CYAN)
+                );
                 mResultText.setTextColor(
-                        ContextCompat.getColor(this, R.color.display_result_text_color));
+                        MaterialColors.getColor(
+                                this,
+                                com.google.android.material.R.attr.editTextColor,
+                                Color.CYAN)
+                );
                 getWindow().setStatusBarColor(
-                        ContextCompat.getColor(this, R.color.calculator_statusbar_color));
+                        ContextCompat.getColor(this, android.R.color.transparent));
             }
 
             invalidateOptionsMenu();
@@ -1034,7 +1042,7 @@ public class Calculator extends Activity
         revealView.setBottom(displayRect.bottom);
         revealView.setLeft(displayRect.left);
         revealView.setRight(displayRect.right);
-        revealView.setBackgroundColor(ContextCompat.getColor(this, colorRes));
+        revealView.setBackgroundColor(colorRes);
         groupOverlay.add(revealView);
 
         final int[] clearLocation = new int[2];
@@ -1094,7 +1102,7 @@ public class Calculator extends Activity
         }
         cancelIfEvaluating(true);
         announceClearedForAccessibility();
-        reveal(mCurrentButton, R.color.calculator_primary_color, new AnimatorListenerAdapter() {
+        reveal(mCurrentButton, MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.WHITE), new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 onClearAnimationEnd();
@@ -1112,7 +1120,12 @@ public class Calculator extends Activity
         if (mCurrentState == CalculatorState.EVALUATE) {
             setState(CalculatorState.ANIMATE);
             mResultText.announceForAccessibility(getResources().getString(errorResourceId));
-            reveal(mCurrentButton, R.color.calculator_error_color,
+            reveal(mCurrentButton,
+                    MaterialColors.getColor(
+                            this,
+                            com.google.android.material.R.attr.colorError,
+                            Color.WHITE
+                    ),
                     new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {

@@ -57,8 +57,7 @@
             style="@style/HistoryItemTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:ellipsize="none"
-            android:textColor="@color/display_formula_text_color" />
+            android:ellipsize="none"/>
 
     </com.android.calculator2.CalculatorScrollView>
 
@@ -68,7 +67,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:bufferType="spannable"
-        android:maxLines="1"
-        android:textColor="@color/display_result_text_color" />
+        android:maxLines="1"/>
 
 </LinearLayout>

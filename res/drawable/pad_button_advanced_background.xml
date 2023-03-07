@@ -16,4 +16,4 @@
   -->
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/pad_button_advanced_ripple_color" />
+    android:color="?attr/colorSecondary" />

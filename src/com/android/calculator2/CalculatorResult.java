@@ -21,10 +21,10 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import androidx.annotation.IntDef;
-import androidx.core.content.ContextCompat;
 import androidx.core.os.BuildCompat;
 import android.text.Layout;
 import android.text.Spannable;
@@ -47,6 +47,7 @@ import android.view.ViewConfiguration;
 import android.widget.OverScroller;
 import android.widget.Toast;
 
+import com.google.android.material.color.MaterialColors;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -161,7 +162,8 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
         mScroller = new OverScroller(context);
         mHighlightSpan = new BackgroundColorSpan(getHighlightColor());
         mExponentColorSpan = new ForegroundColorSpan(
-                ContextCompat.getColor(context, R.color.display_result_exponent_text_color));
+                MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE)
+        );
         mGestureDetector = new GestureDetector(context,
             new GestureDetector.SimpleOnGestureListener() {
                 @Override

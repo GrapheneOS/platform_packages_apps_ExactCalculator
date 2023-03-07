@@ -20,7 +20,6 @@
     android:id="@+id/display"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/display_background_color"
     android:clipChildren="false"
     android:elevation="4dip"
     android:orientation="vertical">
@@ -49,7 +48,6 @@
                 android:gravity="bottom|end"
                 android:longClickable="true"
                 android:singleLine="true"
-                android:textColor="@color/display_formula_text_color"
                 android:textIsSelectable="false" />
 
         </com.android.calculator2.CalculatorScrollView>
@@ -62,7 +60,6 @@
             android:layout_gravity="bottom"
             android:bufferType="spannable"
             android:singleLine="true"
-            android:textColor="@color/display_result_text_color"
             android:visibility="invisible" />
 
     </FrameLayout>

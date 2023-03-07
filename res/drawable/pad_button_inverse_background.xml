@@ -16,7 +16,7 @@
   -->
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/pad_button_advanced_ripple_color">
+    android:color="?attr/colorSecondary">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
             <corners android:radius="4dip" />
@@ -30,7 +30,7 @@
             <item android:state_selected="true">
                 <shape android:shape="rectangle">
                     <corners android:radius="4dip" />
-                    <solid android:color="@color/pad_button_advanced_ripple_color" />
+                    <solid android:color="?attr/colorSecondary" />
                 </shape>
             </item>
         </selector>

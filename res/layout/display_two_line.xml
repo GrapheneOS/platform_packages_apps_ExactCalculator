@@ -20,7 +20,6 @@
     android:id="@+id/display"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/display_background_color"
     android:elevation="4dip"
     android:orientation="vertical">
 
@@ -39,8 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="none"
-            android:maxLines="1"
-            android:textColor="@color/display_formula_text_color" />
+            android:maxLines="1" />
 
     </com.android.calculator2.CalculatorScrollView>
 
@@ -50,7 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:bufferType="spannable"
-        android:singleLine="true"
-        android:textColor="@color/display_result_text_color" />
+        android:singleLine="true" />
 
 </com.android.calculator2.CalculatorDisplay>
