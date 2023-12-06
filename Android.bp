@@ -1,0 +1,21 @@
+android_app {
+    name: "ExactCalculator",
+
+    overrides: ["Calculator"],
+
+    sdk_version: "current",
+
+    resource_dirs: ["res"],
+    srcs: ["src/**/*.java"],
+
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+
+    static_libs: [
+        "cr",
+        "androidx.gridlayout_gridlayout",
+        "androidx.recyclerview_recyclerview",
+        "androidx.viewpager_viewpager",
+    ],
+}
