@@ -124,7 +124,7 @@ public class CalculatorFormula extends AlignedTextView implements MenuItem.OnMen
         super.onAttachedToWindow();
 
         mClipboardManager.addPrimaryClipChangedListener(this);
-        onPrimaryClipChanged();
+        post(this::onPrimaryClipChanged);
     }
 
     @Override
