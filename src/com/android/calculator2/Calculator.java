@@ -550,13 +550,6 @@ public class Calculator extends Activity
         super.onDestroy();
     }
 
-    /**
-     * Destroy the evaluator and close the underlying database.
-     */
-    public void destroyEvaluator() {
-        mEvaluator.destroyEvaluator();
-    }
-
     @Override
     public void onActionModeStarted(ActionMode mode) {
         super.onActionModeStarted(mode);

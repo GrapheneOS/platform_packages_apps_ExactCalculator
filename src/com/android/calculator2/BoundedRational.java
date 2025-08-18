@@ -63,60 +63,6 @@ public class BoundedRational {
     }
 
     /**
-     * Produce BoundedRational equal to the given double.
-     */
-    public static BoundedRational valueOf(double x) {
-        final long l = Math.round(x);
-        if ((double) l == x && Math.abs(l) <= 1000) {
-            return valueOf(l);
-        }
-        final long allBits = Double.doubleToRawLongBits(Math.abs(x));
-        long mantissa = (allBits & ((1L << 52) - 1));
-        final int biased_exp = (int)(allBits >>> 52);
-        if ((biased_exp & 0x7ff) == 0x7ff) {
-            throw new ArithmeticException("Infinity or NaN not convertible to BoundedRational");
-        }
-        final long sign = x < 0.0 ? -1 : 1;
-        int exp = biased_exp - 1075;  // 1023 + 52; we treat mantissa as integer.
-        if (biased_exp == 0) {
-            exp += 1;  // Denormal exponent is 1 greater.
-        } else {
-            mantissa += (1L << 52);  // Implied leading one.
-        }
-        BigInteger num = BigInteger.valueOf(sign * mantissa);
-        BigInteger den = BigInteger.ONE;
-        if (exp >= 0) {
-            num = num.shiftLeft(exp);
-        } else {
-            den = den.shiftLeft(-exp);
-        }
-        return new BoundedRational(num, den);
-    }
-
-    /**
-     * Produce BoundedRational equal to the given long.
-     */
-    public static BoundedRational valueOf(long x) {
-        if (x >= -2 && x <= 10) {
-            switch((int) x) {
-              case -2:
-                return MINUS_TWO;
-              case -1:
-                return MINUS_ONE;
-              case 0:
-                return ZERO;
-              case 1:
-                return ONE;
-              case 2:
-                return TWO;
-              case 10:
-                return TEN;
-            }
-        }
-        return new BoundedRational(x);
-    }
-
-    /**
      * Convert to String reflecting raw representation.
      * Debug or log messages only, not pretty.
      */
@@ -138,13 +84,6 @@ public class BoundedRational {
         return result;
     }
 
-    public static String toString(BoundedRational r) {
-        if (r == null) {
-            return "not a small rational";
-        }
-        return r.toString();
-    }
-
     /**
      * Returns a truncated (rounded towards 0) representation of the result.
      * Includes n digits to the right of the decimal point.
@@ -159,54 +98,6 @@ public class BoundedRational {
         }
         return (signum() < 0 ? "-" : "") + digits.substring(0, len - n) + "."
                 + digits.substring(len - n);
-    }
-
-    /**
-     * Return a double approximation.
-     * The result is correctly rounded to nearest, with ties rounded away from zero.
-     * TODO: Should round ties to even.
-     */
-    public double doubleValue() {
-        final int sign = signum();
-        if (sign < 0) {
-            return -BoundedRational.negate(this).doubleValue();
-        }
-        // We get the mantissa by dividing the numerator by denominator, after
-        // suitably prescaling them so that the integral part of the result contains
-        // enough bits. We do the prescaling to avoid any precision loss, so the division result
-        // is correctly truncated towards zero.
-        final int apprExp = mNum.bitLength() - mDen.bitLength();
-        if (apprExp < -1100 || sign == 0) {
-            // Bail fast for clearly zero result.
-            return 0.0;
-        }
-        final int neededPrec = apprExp - 80;
-        final BigInteger dividend = neededPrec < 0 ? mNum.shiftLeft(-neededPrec) : mNum;
-        final BigInteger divisor = neededPrec > 0 ? mDen.shiftLeft(neededPrec) : mDen;
-        final BigInteger quotient = dividend.divide(divisor);
-        final int qLength = quotient.bitLength();
-        int extraBits = qLength - 53;
-        int exponent = neededPrec + qLength;  // Exponent assuming leading binary point.
-        if (exponent >= -1021) {
-            // Binary point is actually to right of leading bit.
-            --exponent;
-        } else {
-            // We're in the gradual underflow range. Drop more bits.
-            extraBits += (-1022 - exponent) + 1;
-            exponent = -1023;
-        }
-        final BigInteger bigMantissa =
-                quotient.add(BigInteger.ONE.shiftLeft(extraBits - 1)).shiftRight(extraBits);
-        if (exponent > 1024) {
-            return Double.POSITIVE_INFINITY;
-        }
-        if (exponent > -1023 && bigMantissa.bitLength() != 53
-                || exponent <= -1023 && bigMantissa.bitLength() >= 53) {
-            throw new AssertionError("doubleValue internal error");
-        }
-        final long mantissa = bigMantissa.longValue();
-        final long bits = (mantissa & ((1l << 52) - 1)) | (((long) exponent + 1023) << 52);
-        return Double.longBitsToDouble(bits);
     }
 
     public CR crValue() {
@@ -345,10 +236,6 @@ public class BoundedRational {
         return new BoundedRational(r.mNum.negate(), r.mDen);
     }
 
-    public static BoundedRational subtract(BoundedRational r1, BoundedRational r2) {
-        return add(r1, negate(r2));
-    }
-
     /**
      * Return product of r1 and r2 without reducing the result.
      */
@@ -419,24 +306,14 @@ public class BoundedRational {
 
     public final static BoundedRational ZERO = new BoundedRational(0);
     public final static BoundedRational HALF = new BoundedRational(1,2);
-    public final static BoundedRational MINUS_HALF = new BoundedRational(-1,2);
     public final static BoundedRational THIRD = new BoundedRational(1,3);
     public final static BoundedRational QUARTER = new BoundedRational(1,4);
     public final static BoundedRational SIXTH = new BoundedRational(1,6);
     public final static BoundedRational ONE = new BoundedRational(1);
     public final static BoundedRational MINUS_ONE = new BoundedRational(-1);
     public final static BoundedRational TWO = new BoundedRational(2);
-    public final static BoundedRational MINUS_TWO = new BoundedRational(-2);
     public final static BoundedRational TEN = new BoundedRational(10);
     public final static BoundedRational TWELVE = new BoundedRational(12);
-    public final static BoundedRational THIRTY = new BoundedRational(30);
-    public final static BoundedRational MINUS_THIRTY = new BoundedRational(-30);
-    public final static BoundedRational FORTY_FIVE = new BoundedRational(45);
-    public final static BoundedRational MINUS_FORTY_FIVE = new BoundedRational(-45);
-    public final static BoundedRational NINETY = new BoundedRational(90);
-    public final static BoundedRational MINUS_NINETY = new BoundedRational(-90);
-
-    private static final BigInteger BIG_TWO = BigInteger.valueOf(2);
     private static final BigInteger BIG_MINUS_ONE = BigInteger.valueOf(-1);
 
     /**

@@ -773,8 +773,6 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
             }
             final float len = orig_length + nCommaChars;
             int deletedChars = 0;
-            final float ellipsisCredit = getNoEllipsisCredit();
-            final float decimalCredit = getDecimalCredit();
             final float effectiveLen = len - (decIndex == -1 ? 0 : getDecimalCredit());
             final float ellipsisAdjustment =
                     needEllipsis ? mNoExponentCredit : getNoEllipsisCredit();
@@ -878,7 +876,6 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
      */
     @Override
     public int getMaxChars() {
-        int result;
         synchronized(mWidthLock) {
             return (int) Math.floor(mWidthConstraint / mCharWidth);
         }
@@ -1125,12 +1122,6 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
     private void unhighlightResult() {
         final Spannable text = (Spannable) getText();
         text.removeSpan(mHighlightSpan);
-    }
-
-    private void setPrimaryClip(ClipData clip) {
-        ClipboardManager clipboard = (ClipboardManager) getContext().
-                                               getSystemService(Context.CLIPBOARD_SERVICE);
-        clipboard.setPrimaryClip(clip);
     }
 
     private void copyContent() {
