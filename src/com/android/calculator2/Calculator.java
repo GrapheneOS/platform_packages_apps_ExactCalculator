@@ -70,7 +70,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.android.calculator2.CalculatorFormula.OnTextSizeChangeListener;
 
