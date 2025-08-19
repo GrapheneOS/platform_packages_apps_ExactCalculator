@@ -357,7 +357,7 @@ public class Calculator extends Activity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_calculator_main);
-        setActionBar((Toolbar) findViewById(R.id.toolbar));
+        setActionBar(findViewById(R.id.toolbar));
 
         // Hide all default options in the ActionBar.
         getActionBar().setDisplayOptions(0);
@@ -371,17 +371,17 @@ public class Calculator extends Activity
         });
 
         mMainCalculator = findViewById(R.id.main_calculator);
-        mDisplayView = (CalculatorDisplay) findViewById(R.id.display);
-        mModeView = (TextView) findViewById(R.id.mode);
-        mFormulaText = (CalculatorFormula) findViewById(R.id.formula);
-        mResultText = (CalculatorResult) findViewById(R.id.result);
-        mFormulaContainer = (HorizontalScrollView) findViewById(R.id.formula_container);
+        mDisplayView = findViewById(R.id.display);
+        mModeView = findViewById(R.id.mode);
+        mFormulaText = findViewById(R.id.formula);
+        mResultText = findViewById(R.id.result);
+        mFormulaContainer = findViewById(R.id.formula_container);
         mEvaluator = Evaluator.getInstance(this);
         mEvaluator.setCallback(mEvaluatorCallback);
         mResultText.setEvaluator(mEvaluator, Evaluator.MAIN_INDEX);
         KeyMaps.setActivity(this);
 
-        mPadViewPager = (ViewPager) findViewById(R.id.pad_pager);
+        mPadViewPager = findViewById(R.id.pad_pager);
         mDeleteButton = findViewById(R.id.del);
         mClearButton = findViewById(R.id.clr);
         final View numberPad = findViewById(R.id.pad_numeric);
@@ -389,11 +389,11 @@ public class Calculator extends Activity
         if (mEqualButton == null || mEqualButton.getVisibility() != View.VISIBLE) {
             mEqualButton = findViewById(R.id.pad_operator).findViewById(R.id.eq);
         }
-        final TextView decimalPointButton = (TextView) numberPad.findViewById(R.id.dec_point);
+        final TextView decimalPointButton = numberPad.findViewById(R.id.dec_point);
         decimalPointButton.setText(getDecimalSeparator());
 
-        mInverseToggle = (TextView) findViewById(R.id.toggle_inv);
-        mModeToggle = (TextView) findViewById(R.id.toggle_mode);
+        mInverseToggle = findViewById(R.id.toggle_inv);
+        mModeToggle = findViewById(R.id.toggle_mode);
 
         mIsOneLine = mResultText.getVisibility() == View.INVISIBLE;
 
@@ -414,7 +414,7 @@ public class Calculator extends Activity
                 findViewById(R.id.op_sqr)
         };
 
-        mDragLayout = (DragLayout) findViewById(R.id.drag_layout);
+        mDragLayout = findViewById(R.id.drag_layout);
         mDragLayout.removeDragCallback(this);
         mDragLayout.addDragCallback(this);
         mDragLayout.setCloseCallback(this);

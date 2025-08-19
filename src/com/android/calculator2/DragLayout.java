@@ -66,7 +66,7 @@ public class DragLayout extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         mDragHelper = ViewDragHelper.create(this, 1.0f, new DragHelperCallback());
-        mHistoryFrame = (FrameLayout) findViewById(R.id.history_frame);
+        mHistoryFrame = findViewById(R.id.history_frame);
         super.onFinishInflate();
     }
 

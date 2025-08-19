@@ -106,7 +106,7 @@ public class CalculatorDisplay extends LinearLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         mTransition = new Fade()
                 .setDuration(FADE_DURATION)
                 .addTarget(mToolbar);
