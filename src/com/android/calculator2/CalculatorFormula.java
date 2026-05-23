@@ -158,10 +158,6 @@ public class CalculatorFormula extends AlignedTextView implements MenuItem.OnMen
         return mMinimumTextSize;
     }
 
-    public float getMaximumTextSize() {
-        return mMaximumTextSize;
-    }
-
     public float getVariableTextSize(CharSequence text) {
         if (mWidthConstraint < 0 || mMaximumTextSize <= mMinimumTextSize) {
             // Not measured, bail early.

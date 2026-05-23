@@ -202,7 +202,7 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
                     }
                     int duration = (int)(e2.getEventTime() - e1.getEventTime());
                     if (duration < 1 || duration > 100) duration = 10;
-                    mScroller.startScroll(mCurrentPos, 0, distance, 0, (int)duration);
+                    mScroller.startScroll(mCurrentPos, 0, distance, 0, duration);
                     postInvalidateOnAnimation();
                     return true;
                 }
@@ -492,13 +492,13 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
         mLsdOffset = lsdOffset;
         mAppendExponent = false;
         // Prevent scrolling past initial position, which is calculated to show leading digits.
-        mCurrentPos = mMinPos = (int) Math.round(initPrecOffset * mCharWidth);
+        mCurrentPos = mMinPos = Math.round(initPrecOffset * mCharWidth);
         if (msdIndex == Evaluator.INVALID_MSD) {
             // Possible zero value
             if (lsdOffset == Integer.MIN_VALUE) {
                 // Definite zero value.
                 mMaxPos = mMinPos;
-                mMaxCharOffset = (int) Math.round(mMaxPos/mCharWidth);
+                mMaxCharOffset = Math.round(mMaxPos/mCharWidth);
                 mScrollable = false;
             } else {
                 // May be very small nonzero value.  Allow user to find out.
@@ -553,7 +553,7 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
                 } else {
                     mMaxCharOffset = Math.min(newMaxCharOffset, MAX_RIGHT_SCROLL);
                 }
-                mMaxPos = Math.min((int) Math.round(mMaxCharOffset * mCharWidth),
+                mMaxPos = Math.min(Math.round(mMaxCharOffset * mCharWidth),
                         MAX_RIGHT_SCROLL);
             } else if (!mWholePartFits && !mScrollable) {
                 // Corner case in which entire number fits, but not with grouping separators.  We
@@ -574,7 +574,7 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
                     mAppendExponent = true;
                 }
             } else {
-                mMaxPos = Math.min((int) Math.round(mMaxCharOffset * mCharWidth),
+                mMaxPos = Math.min(Math.round(mMaxCharOffset * mCharWidth),
                         MAX_RIGHT_SCROLL);
             }
             if (!mScrollable) {
@@ -773,8 +773,6 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
             }
             final float len = orig_length + nCommaChars;
             int deletedChars = 0;
-            final float ellipsisCredit = getNoEllipsisCredit();
-            final float decimalCredit = getDecimalCredit();
             final float effectiveLen = len - (decIndex == -1 ? 0 : getDecimalCredit());
             final float ellipsisAdjustment =
                     needEllipsis ? mNoExponentCredit : getNoEllipsisCredit();
@@ -878,7 +876,6 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
      */
     @Override
     public int getMaxChars() {
-        int result;
         synchronized(mWidthLock) {
             return (int) Math.floor(mWidthConstraint / mCharWidth);
         }
@@ -896,7 +893,7 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
      * UI thread only.
      */
     int getCharOffset(int pos) {
-        return (int) Math.round(pos / mCharWidth);  // Lock not needed.
+        return Math.round(pos / mCharWidth);  // Lock not needed.
     }
 
     void clear() {
@@ -1125,12 +1122,6 @@ public class CalculatorResult extends AlignedTextView implements MenuItem.OnMenu
     private void unhighlightResult() {
         final Spannable text = (Spannable) getText();
         text.removeSpan(mHighlightSpan);
-    }
-
-    private void setPrimaryClip(ClipData clip) {
-        ClipboardManager clipboard = (ClipboardManager) getContext().
-                                               getSystemService(Context.CLIPBOARD_SERVICE);
-        clipboard.setPrimaryClip(clip);
     }
 
     private void copyContent() {

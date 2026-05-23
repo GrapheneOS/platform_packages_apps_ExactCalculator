@@ -38,7 +38,6 @@
 
 package com.android.calculator2;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.AbstractWindowedCursor;
@@ -50,7 +49,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.provider.BaseColumns;
 import android.util.Log;
-import android.view.View;
 
 public class ExpressionDB {
     private final boolean CONTINUE_WITH_BAD_DB = false;
@@ -80,7 +78,6 @@ public class ExpressionDB {
         private boolean longTimeoutFromFlags(int flags) {
             return (flags & LONG_TIMEOUT) != 0;
         }
-        private static final int MILLIS_IN_15_MINS = 15 * 60 * 1000;
         private RowData(byte[] expr, int flags, long timeStamp) {
             mExpression = expr;
             mFlags = flags;
@@ -479,7 +476,6 @@ public class ExpressionDB {
      * to complete.
      */
     public long addRow(boolean negativeIndex, RowData data) {
-        long result;
         long newIndex;
         waitForDBInitialized();
         synchronized(mLock) {
@@ -545,7 +541,6 @@ public class ExpressionDB {
      * We assume that the database has been initialized, and the argument has been range checked.
      */
     private RowData getRowFromCursor(int offset) {
-        RowData result;
         synchronized(mLock) {
             if (!mAllCursor.moveToPosition(offset)) {
                 Log.e("Calculator", "Failed to move cursor to position " + offset);

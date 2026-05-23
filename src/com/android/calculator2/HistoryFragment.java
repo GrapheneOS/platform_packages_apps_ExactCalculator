@@ -60,10 +60,10 @@ public class HistoryFragment extends Fragment implements DragLayout.DragCallback
         final View view = inflater.inflate(
                 R.layout.fragment_history, container, false /* attachToRoot */);
 
-        mDragLayout = (DragLayout) container.getRootView().findViewById(R.id.drag_layout);
+        mDragLayout = container.getRootView().findViewById(R.id.drag_layout);
         mDragLayout.addDragCallback(this);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.history_recycler_view);
+        mRecyclerView = view.findViewById(R.id.history_recycler_view);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -78,7 +78,7 @@ public class HistoryFragment extends Fragment implements DragLayout.DragCallback
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
-        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.history_toolbar);
+        final Toolbar toolbar = view.findViewById(R.id.history_toolbar);
         toolbar.inflateMenu(R.menu.fragment_history);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -184,9 +184,9 @@ public class HistoryFragment extends Fragment implements DragLayout.DragCallback
 
     private void initializeController(boolean isResult, boolean isOneLine, boolean isDisplayEmpty) {
         mDragController.setDisplayFormula(
-                (CalculatorFormula) getActivity().findViewById(R.id.formula));
+                getActivity().findViewById(R.id.formula));
         mDragController.setDisplayResult(
-                (CalculatorResult) getActivity().findViewById(R.id.result));
+                getActivity().findViewById(R.id.result));
         mDragController.setToolbar(getActivity().findViewById(R.id.toolbar));
         mDragController.setEvaluator(mEvaluator);
         mDragController.initializeController(isResult, isOneLine, isDisplayEmpty);

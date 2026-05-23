@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * A mathematical expression represented as a sequence of "tokens".
@@ -80,8 +79,6 @@ class CalculatorExpr {
 
     private static enum TokenKind { CONSTANT, OPERATOR, PRE_EVAL };
     private static TokenKind[] tokenKindValues = TokenKind.values();
-    private final static BigInteger BIG_MILLION = BigInteger.valueOf(1000000);
-    private final static BigInteger BIG_BILLION = BigInteger.valueOf(1000000000);
 
     private static abstract class Token {
         abstract TokenKind kind();
@@ -394,10 +391,6 @@ class CalculatorExpr {
         mExpr = new ArrayList<Token>();
     }
 
-    private CalculatorExpr(ArrayList<Token> expr) {
-        mExpr = expr;
-    }
-
     /**
      * Construct CalculatorExpr, by reading it from in.
      */
@@ -660,14 +653,6 @@ class CalculatorExpr {
             mPrefixLength = len;
             mExprResolver = er;
         }
-        EvalContext(DataInput in, int len, ExprResolver er) throws IOException {
-            mDegreeMode = in.readBoolean();
-            mPrefixLength = len;
-            mExprResolver = er;
-        }
-        void write(DataOutput out) throws IOException {
-            out.writeBoolean(mDegreeMode);
-        }
     }
 
     private UnifiedReal toRadians(UnifiedReal x, EvalContext ec) {
@@ -895,7 +880,6 @@ class CalculatorExpr {
                 val = val.multiply(tmp.val);
             }
             cpos = tmp.pos;
-            is_mul = is_div = false;
         }
         return new EvalRet(cpos, val);
     }
