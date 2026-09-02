@@ -47,6 +47,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.viewpager.widget.ViewPager;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -73,6 +78,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.android.calculator2.CalculatorFormula.OnTextSizeChangeListener;
+import com.android.calculator2.license.LicensesActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -358,6 +364,17 @@ public class Calculator extends Activity
 
         setContentView(R.layout.activity_calculator_main);
         setActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        View root = findViewById(android.R.id.content);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        WindowInsetsControllerCompat controller =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
 
         // Hide all default options in the ActionBar.
         getActionBar().setDisplayOptions(0);
@@ -827,55 +844,50 @@ public class Calculator extends Activity
         cancelUnrequested();
 
         final int id = view.getId();
-        switch (id) {
-            case R.id.eq:
-                onEquals();
-                break;
-            case R.id.del:
-                onDelete();
-                break;
-            case R.id.clr:
-                onClear();
-                return;  // Toolbar visibility adjusted at end of animation.
-            case R.id.toggle_inv:
-                final boolean selected = !mInverseToggle.isSelected();
-                mInverseToggle.setSelected(selected);
-                onInverseToggled(selected);
-                if (mCurrentState == CalculatorState.RESULT) {
-                    mResultText.redisplay();   // In case we cancelled reevaluation.
-                }
-                break;
-            case R.id.toggle_mode:
-                cancelIfEvaluating(false);
-                final boolean mode = !mEvaluator.getDegreeMode(Evaluator.MAIN_INDEX);
-                if (mCurrentState == CalculatorState.RESULT
-                        && mEvaluator.getExpr(Evaluator.MAIN_INDEX).hasTrigFuncs()) {
-                    // Capture current result evaluated in old mode.
-                    mEvaluator.collapse(mEvaluator.getMaxIndex());
-                    redisplayFormula();
-                }
-                // In input mode, we reinterpret already entered trig functions.
-                mEvaluator.setDegreeMode(mode);
-                onModeChanged(mode);
-                // Show the toolbar to highlight the mode change.
-                showAndMaybeHideToolbar();
-                setState(CalculatorState.INPUT);
-                mResultText.clear();
-                if (!haveUnprocessed()) {
-                    evaluateInstantIfNecessary();
-                }
-                return;
-            default:
-                cancelIfEvaluating(false);
-                if (haveUnprocessed()) {
-                    // For consistency, append as uninterpreted characters.
-                    // This may actually be useful for a left parenthesis.
-                    addChars(KeyMaps.toString(this, id), true);
-                } else {
-                    addExplicitKeyToExpr(id);
-                    redisplayAfterFormulaChange();
-                }
-                break;
+        if (id == R.id.eq) {
+            onEquals();
+        } else if (id == R.id.del) {
+            onDelete();
+        } else if (id == R.id.clr) {
+            onClear();
+            return;  // Toolbar visibility adjusted at end of animation.
+        } else if (id == R.id.toggle_inv) {
+            final boolean selected = !mInverseToggle.isSelected();
+            mInverseToggle.setSelected(selected);
+            onInverseToggled(selected);
+            if (mCurrentState == CalculatorState.RESULT) {
+                mResultText.redisplay();   // In case we cancelled reevaluation.
+            }
+        } else if (id == R.id.toggle_mode) {
+            cancelIfEvaluating(false);
+            final boolean mode = !mEvaluator.getDegreeMode(Evaluator.MAIN_INDEX);
+            if (mCurrentState == CalculatorState.RESULT
+                    && mEvaluator.getExpr(Evaluator.MAIN_INDEX).hasTrigFuncs()) {
+                // Capture current result evaluated in old mode.
+                mEvaluator.collapse(mEvaluator.getMaxIndex());
+                redisplayFormula();
+            }
+            // In input mode, we reinterpret already entered trig functions.
+            mEvaluator.setDegreeMode(mode);
+            onModeChanged(mode);
+            // Show the toolbar to highlight the mode change.
+            showAndMaybeHideToolbar();
+            setState(CalculatorState.INPUT);
+            mResultText.clear();
+            if (!haveUnprocessed()) {
+                evaluateInstantIfNecessary();
+            }
+            return;
+        } else {
+            cancelIfEvaluating(false);
+            if (haveUnprocessed()) {
+                // For consistency, append as uninterpreted characters.
+                // This may actually be useful for a left parenthesis.
+                addChars(KeyMaps.toString(this, id), true);
+            } else {
+                addExplicitKeyToExpr(id);
+                redisplayAfterFormulaChange();
+            }
         }
         showOrHideToolbar();
     }
@@ -1275,22 +1287,21 @@ public class Calculator extends Activity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_history:
-                showHistoryFragment();
-                return true;
-            case R.id.menu_leading:
-                displayFull();
-                return true;
-            case R.id.menu_fraction:
-                displayFraction();
-                return true;
-            case R.id.menu_licenses:
-                startActivity(new Intent(this, Licenses.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_history) {
+            showHistoryFragment();
+            return true;
+        } else if (itemId == R.id.menu_leading) {
+            displayFull();
+            return true;
+        } else if (itemId == R.id.menu_fraction) {
+            displayFraction();
+            return true;
+        } else if (itemId == R.id.menu_licenses) {
+            startActivity(new Intent(this, LicensesActivity.class));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /* Begin override CloseCallback method. */

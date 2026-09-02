@@ -16,8 +16,7 @@
   -->
 
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.calculator2">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="false"
@@ -45,10 +44,10 @@
         </activity>
 
         <activity
-            android:name=".Licenses"
+            android:name=".license.LicensesActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".Calculator"
-            android:theme="@style/Theme.Licenses" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
     </application>
 </manifest>
